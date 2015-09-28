@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:trusty
 MAINTAINER sawanoboriyu@higanworks.com
 
 RUN apt-get -y update
