@@ -20,8 +20,9 @@ RUN berks vendor cookbooks
 RUN chef-client -z -o "omnibus::default"
 
 ADD files/Gemfile /root/Gemfile
+ADD files/prebundle.sh /root/prebundle.sh
 WORKDIR /root
-RUN source /home/omnibus/load-omnibus-toolchain.sh ; bundle install
+RUN ./prebundle.sh
 
 ADD files/bash_with_env.sh /home/omnibus/bash_with_env.sh
 
