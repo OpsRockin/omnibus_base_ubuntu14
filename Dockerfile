@@ -1,23 +1,22 @@
 FROM ubuntu:trusty
 MAINTAINER sawanoboriyu@higanworks.com
 
-RUN apt-get -y update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" -o Dpkg::Options::="--force-confdef" upgrade
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" --force-yes -fuy dist-upgrade
-RUN apt-get -y autoremove
+RUN apt-get -y update && \
+    apt-get -y install curl git
 
-RUN apt-get -y update
-RUN apt-get -y install curl git
-
-## Chef DK
-RUN curl -s chef.sh | bash -s -- -P chefdk
+## Chef Client and librarian
+RUN eval "$(curl chef.sh)" && \
+    /opt/chef/embedded/bin/gem install librarian-chef --no-ri --no-rdoc
 
 ## Prepare for omnibus
 RUN mkdir /root/chefrepo
-ADD files/Berksfile /root/chefrepo/Berksfile
+ADD files/Cheffile /root/chefrepo/Cheffile
 WORKDIR /root/chefrepo
-RUN berks vendor cookbooks
-RUN chef-client -z -o "omnibus::default"
+RUN /opt/chef/embedded/bin/librarian-chef install && \
+    rm -rf tmp
+
+RUN chef-client -z -o "omnibus::default" && \
+    rm -rf /var/chef
 
 ADD files/Gemfile /root/Gemfile
 ADD files/prebundle.sh /root/prebundle.sh
