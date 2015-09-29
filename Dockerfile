@@ -30,9 +30,9 @@ ENV HOME /home/omnibus
 
 ## ONBUILD to build project
 ONBUILD ADD . /home/omnibus/omnibus-project
-ONBUILD VOLUME ["pkg", "/home/omnibus/omnibus-project/pkg"]
 
 WORKDIR /home/omnibus/omnibus-project
 ONBUILD RUN bash -c 'source /home/omnibus/load-omnibus-toolchain.sh ; bundle install --binstubs bundle_bin --without development test'
+ONBUILD RUN echo "Usage: docker run  -it -e OMNIBUS_PROJECT=${PROJECT_NAME} -v `pwd`:/home/omnibus/omnibus-project/pkg builder-ubuntu1404"
 
 CMD ["/home/omnibus/build.sh"]
