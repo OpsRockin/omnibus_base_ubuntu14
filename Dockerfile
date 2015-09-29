@@ -2,7 +2,7 @@ FROM ubuntu:trusty
 MAINTAINER sawanoboriyu@higanworks.com
 
 RUN apt-get -y update && \
-    apt-get -y install curl git
+    apt-get -y install curl
 
 ## Chef Client and librarian
 RUN eval "$(curl chef.sh)" && \
