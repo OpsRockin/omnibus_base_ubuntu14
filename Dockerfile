@@ -25,7 +25,14 @@ WORKDIR /root
 RUN ./prebundle.sh
 
 ADD files/bash_with_env.sh /home/omnibus/bash_with_env.sh
+ADD files/build.sh /home/omnibus/build.sh
 
 ENV HOME /home/omnibus
 
-CMD ["/home/omnibus/bash_with_env.sh"]
+ONBUILD ADD . /home/omnibus/omnibus-project
+ONBUILD VOLUME ["pkg", "/home/omnibus/omnibus-project/pkg"]
+
+WORKDIR /home/omnibus/omnibus-project
+ONBUILD RUN bash -c 'source /home/omnibus/load-omnibus-toolchain.sh ; bundle install --binstubs bundle_bin --without development test'
+
+CMD ["/home/omnibus/build.sh"]
