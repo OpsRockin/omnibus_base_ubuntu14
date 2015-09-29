@@ -4,23 +4,23 @@ MAINTAINER sawanoboriyu@higanworks.com
 RUN apt-get -y update && \
     apt-get -y install curl
 
-## Chef Client and librarian
-RUN eval "$(curl chef.sh)" && \
-    /opt/chef/embedded/bin/gem install librarian-chef --no-ri --no-rdoc
-
-## Prepare for omnibus
+## Prepare for Chef
 RUN mkdir /root/chefrepo
 ADD files/Cheffile /root/chefrepo/Cheffile
 WORKDIR /root/chefrepo
-RUN /opt/chef/embedded/bin/librarian-chef install && \
-    rm -rf tmp
 
-RUN chef-client -z -o "omnibus::default" && \
-    rm -rf /var/chef
+## Create Omnibus Environment and Seppuku.
+## (Delete chef to reduce image size.)
+RUN eval "$(curl chef.sh)" && \
+    /opt/chef/embedded/bin/gem install librarian-chef --no-ri --no-rdoc && \
+    /opt/chef/embedded/bin/librarian-chef install && \
+    chef-client -z -o "omnibus::default" && \
+    rm -rf /var/chef /opt/chef /root/chefrepo
 
+## Preinstall gems
+WORKDIR /root
 ADD files/Gemfile /root/Gemfile
 ADD files/prebundle.sh /root/prebundle.sh
-WORKDIR /root
 RUN ./prebundle.sh
 
 ADD files/bash_with_env.sh /home/omnibus/bash_with_env.sh
@@ -28,6 +28,7 @@ ADD files/build.sh /home/omnibus/build.sh
 
 ENV HOME /home/omnibus
 
+## ONBUILD to build project
 ONBUILD ADD . /home/omnibus/omnibus-project
 ONBUILD VOLUME ["pkg", "/home/omnibus/omnibus-project/pkg"]
 
