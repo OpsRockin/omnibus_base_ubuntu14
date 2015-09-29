@@ -15,7 +15,7 @@ RUN eval "$(curl chef.sh)" && \
     /opt/chef/embedded/bin/gem install librarian-chef --no-ri --no-rdoc && \
     /opt/chef/embedded/bin/librarian-chef install && \
     chef-client -z -o "omnibus::default" && \
-    rm -rf /var/chef /opt/chef /root/chefrepo
+    rm -rf /opt/chef /root/chefrepo /root/.chef
 
 ## Preinstall gems
 WORKDIR /root
