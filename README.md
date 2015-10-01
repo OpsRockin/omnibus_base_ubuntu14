@@ -7,6 +7,14 @@ https://hub.docker.com/r/opsrock/omnibus_base_ubuntu14/
 - https://github.com/OpsRockin/omnibus_base_ubuntu14
 - https://github.com/OpsRockin/omnibus_base_centos6
 
+### Auto build policies
+
+build via IFTTT.
+
+- gem omnibus master branch updated.
+- gem omnibus-software master branch updated.
+- cookbook omnibus new version released.
+
 
 ## Usage
 
