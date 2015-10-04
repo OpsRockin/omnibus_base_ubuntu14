@@ -57,3 +57,14 @@ $ docker run -e OMNIBUS_PROJECT=serverspec -v pkg:/home/omnibus/omnibus-project/
 ```
 
 Packages will be created in `./pkg/` directory.
+
+
+## Tips
+
+### Recycle build cache
+
+mount cache volume and pass path of cache via env.
+
+`-e BUILD_CACHE_PATH=YOUR_CACHE_PATH`
+
+
