@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Install omnibus and omnibus-software
 gem 'omnibus', github: 'chef/omnibus'
-gem 'omnibus-software', github: 'opscode/omnibus-software'
+gem 'omnibus-software', github: 'chef/omnibus-software'
 
 # Use Test Kitchen with Vagrant for convering the build environment
 # gem 'rsync'
