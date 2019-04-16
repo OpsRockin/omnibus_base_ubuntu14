@@ -11,7 +11,7 @@ WORKDIR /root/chefrepo
 
 ## Create Omnibus Environment and Seppuku.
 ## (Delete chef to reduce image size.)
-RUN eval "$(curl chef.sh)" && \
+RUN eval "$(curl https://omnitruck.chef.io/install.sh)" && \
     /opt/chef/embedded/bin/gem install librarian-chef --no-ri --no-rdoc && \
     /opt/chef/embedded/bin/librarian-chef install && \
     chef-client -z -o "omnibus::default" && \
